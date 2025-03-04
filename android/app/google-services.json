@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "118688722792",
+    "project_id": "dummy-commerce-1ca0f",
+    "storage_bucket": "dummy-commerce-1ca0f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118688722792:android:57f06184855b32bcb730dd",
+        "android_client_info": {
+          "package_name": "com.novai.novai_dummy_commerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQyxu4ROx5UfD1TG4HOb7sl579XYqq6o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
