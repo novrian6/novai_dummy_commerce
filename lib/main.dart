@@ -1,3 +1,6 @@
+//Developer: Nova Novriansyah Msc, MBA
+//Date: Mar-2025
+
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart'; // Ensure this import points to your actual SplashScreen file
 import 'package:firebase_core/firebase_core.dart'; //firebase
