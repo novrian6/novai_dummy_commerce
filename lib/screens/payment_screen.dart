@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import 'thank_you_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class PaymentScreen extends StatelessWidget {
   final Product product;
@@ -53,6 +54,21 @@ class PaymentScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+
+                  // Log purchase event in Firebase Analytics
+                   FirebaseAnalytics.instance.logEvent(
+                    name: 'payment',
+                    parameters: {
+                      'transaction_id': 'T12345', // Replace with actual transaction ID
+                      'item_id': product.id,
+                      'item_name': product.name,
+                     // 'item_category': product.category,
+                      'price': product.price,
+                      'value': product.price,
+                      'currency': 'IDR',
+                    },
+                  );
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

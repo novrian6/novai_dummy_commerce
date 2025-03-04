@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class ThankYouScreen extends StatelessWidget {
   const ThankYouScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Log the "purchase_success" event when the screen is displayed
+    FirebaseAnalytics.instance.logEvent(
+      name: 'purchase_success',
+      parameters: {
+        'screen': 'ThankYouScreen',
+        'message': 'User completed a purchase successfully',
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Removes the back button

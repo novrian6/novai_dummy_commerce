@@ -1,8 +1,9 @@
-//import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/product.dart';
 import 'product_detail_screen.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // Set current screen
-    //FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
-
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
+    FirebaseAnalytics.instance.logEvent(name: 'home_screen');
     return Scaffold(
       backgroundColor: Colors.blueGrey[50], // Soft background
       appBar: AppBar(

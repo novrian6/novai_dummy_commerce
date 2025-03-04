@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/product.dart';
 import 'payment_screen.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -10,6 +11,16 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Log view_item event
+    FirebaseAnalytics.instance.logEvent(
+      name: 'product_detail',
+      parameters: {
+        'item_id': product.id,
+        'item_name': product.name,
+        //'item_category': product.category,
+        'price': product.price,
+      },
+    );
     // Format the price with thousand separators
     final formattedPrice = NumberFormat.currency(
       locale: 'id_ID',

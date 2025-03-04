@@ -1,7 +1,8 @@
-//import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'home_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // Log app_open event
-    //FirebaseAnalytics.instance.logEvent(name: 'app_open');
+    FirebaseAnalytics.instance.logEvent(name: 'splash_screen_open');
     return Scaffold(
       body: Stack(
         children: [
