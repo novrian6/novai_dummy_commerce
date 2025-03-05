@@ -15,31 +15,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Product> _products = Product.getDummyProducts();
   List<Product> _filteredProducts = [];
-  final List<Product> _cartItems = [];
-  final TextEditingController _searchController = TextEditingController();
+  final List<Product> _cartItems = []; // Cart items list
 
   @override
   void initState() {
     super.initState();
     _filteredProducts = _products;
-    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
-    FirebaseAnalytics.instance.logEvent(name: 'home_screen_opened');
   }
 
   void _filterProducts(String query) {
     setState(() {
-      if (query.isEmpty) {
-        _filteredProducts = _products;
-      } else {
-        _filteredProducts = _products
-            .where((product) => product.name.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-
-        FirebaseAnalytics.instance.logEvent(
-          name: 'search_performed',
-          parameters: {'query': query},
-        );
-      }
+      _filteredProducts = _products
+          .where((product) =>
+              product.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -47,15 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _cartItems.add(product);
     });
-
-    FirebaseAnalytics.instance.logEvent(
-      name: 'add_to_cart',
-      parameters: {
-        'item_id': product.id,
-        'item_name': product.name,
-        'price': product.price,
-      },
-    );
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -67,19 +47,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Set current screen
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
+    FirebaseAnalytics.instance.logEvent(name: 'home_screen');
+
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.blueGrey[50], // Soft background
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: const Text(
-          'DummyCommerce',
-          style: TextStyle(color: Colors.white),
-        ),
+        title:
+            const Text('DummyCommerce', style: TextStyle(color: Colors.white)),
         actions: [
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -91,14 +73,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               if (_cartItems.isNotEmpty)
                 Positioned(
-                  right: 6,
-                  top: 6,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Colors.red,
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    constraints:
+                        const BoxConstraints(minWidth: 20, minHeight: 20),
                     child: Text(
                       _cartItems.length.toString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -111,8 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              controller: _searchController,
-              onSubmitted: _filterProducts, // Hanya filter saat "Enter" ditekan
+              onChanged: _filterProducts,
               decoration: InputDecoration(
                 hintText: 'Search products...',
                 prefixIcon: const Icon(Icons.search, color: Colors.blueAccent),
@@ -127,18 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Expanded(
-            child: _filteredProducts.isEmpty
-                ? const Center(
-              child: Text(
-                'No products found',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-            )
-                : GridView.builder(
+            child: GridView.builder(
               padding: const EdgeInsets.all(16.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.65,
+                childAspectRatio: 0.75,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
@@ -154,33 +137,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailScreen(
-                                product: product,
-                                onAddToCart: _addToCart,
-                                cartItems: _cartItems,
-                              ),
-                            ),
-                          );
-                        },
+                      Expanded(
                         child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          borderRadius:
+                              const BorderRadius.vertical(top: Radius.circular(12)),
                           child: Image.network(
                             product.imageUrl,
                             fit: BoxFit.cover,
                             width: double.infinity,
-                            height: 120,
                             loadingBuilder: (context, child, progress) {
                               if (progress == null) return child;
                               return Center(
                                 child: CircularProgressIndicator(
                                   value: progress.expectedTotalBytes != null
                                       ? progress.cumulativeBytesLoaded /
-                                      progress.expectedTotalBytes!
+                                          progress.expectedTotalBytes!
                                       : null,
                                 ),
                               );
@@ -188,61 +159,47 @@ class _HomeScreenState extends State<HomeScreen> {
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
                                 color: Colors.grey[300],
-                                height: 120,
                                 child: const Icon(Icons.error, color: Colors.red),
                               );
                             },
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                product.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                NumberFormat.currency(
-                                    locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0)
-                                    .format(product.price),
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              NumberFormat.currency(
+                                      locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0)
+                                  .format(product.price),
+                              style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: ElevatedButton(
-                            onPressed: () => _addToCart(product),
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            ),
-                            child: const Text(
-                              'Add to Cart',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
+                        child: ElevatedButton(
+                          onPressed: () => _addToCart(product),
+                          child: const Text('Add to Cart'),
                         ),
                       ),
-                      const SizedBox(height: 6),
                     ],
                   ),
                 );

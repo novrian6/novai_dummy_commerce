@@ -9,7 +9,7 @@ class ThankYouScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Log the "purchase_success" event when the screen is displayed
     FirebaseAnalytics.instance.logEvent(
-      name: 'purchase_success',
+      name: 'thank_you_screen_opened',
       parameters: {
         'screen': 'ThankYouScreen',
         'message': 'User completed a purchase successfully',
