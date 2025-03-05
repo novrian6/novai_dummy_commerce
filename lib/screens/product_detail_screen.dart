@@ -66,6 +66,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //firebase analytics
+    FirebaseAnalytics.instance.logScreenView(screenName: 'ProductDetailScreen');
     final formattedPrice = NumberFormat.currency(
       locale: 'id_ID',
       symbol: 'Rp ',

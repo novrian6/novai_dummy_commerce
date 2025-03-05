@@ -45,7 +45,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     double totalPrice = widget.cartItems.fold<double>(0, (sum, item) => sum + item.price);
-
+    //firebase analytics
+    FirebaseAnalytics.instance.logScreenView(screenName: 'PaymentScreen');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment'),

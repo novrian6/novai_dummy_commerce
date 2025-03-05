@@ -38,6 +38,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        //resValue("string", "applicationName", "novai_dummy_commerce") //add by nova
     }
 
     buildTypes {
@@ -52,3 +53,4 @@ android {
 flutter {
     source = "../.."
 }
+

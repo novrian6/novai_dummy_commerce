@@ -22,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _filteredProducts = _products;
-    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
+    //FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
+    FirebaseAnalytics.instance.logScreenView(screenName: 'HomeScreen');
     FirebaseAnalytics.instance.logEvent(name: 'home_screen_opened');
   }
 

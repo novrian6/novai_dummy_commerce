@@ -30,6 +30,8 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //firebase analytics
+    FirebaseAnalytics.instance.logScreenView(screenName: 'CartScreen');
     final formatCurrency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
     double totalPrice = widget.cartItems.fold<double>(0, (sum, item) => sum + item.price);
 

@@ -29,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // Log app_open event
+    FirebaseAnalytics.instance.logScreenView(screenName: 'SplashScreen');
     FirebaseAnalytics.instance.logEvent(name: 'splash_screen_open');
     return Scaffold(
       body: Stack(
